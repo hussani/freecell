@@ -1,7 +1,8 @@
 package com.hussani.freecell;
 
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.Vector;
+import java.util.List;
 
 public class App {
     public static final Integer MAX_CARD_NUMBERS = 13;
@@ -11,28 +12,34 @@ public class App {
         boolean exit = false;
         String input;
 
-        Vector<Card> deck = populateDeck();
-        Collections.shuffle(deck);
+        MultipleStackInArray multipleStack = new MultipleStackInArray(populateDeck());
         while (!exit) {
             System.out.println("Welcome to Freecell!");
-            System.out.println("Vector: " + deck);
+            multipleStack.print();
             System.out.println("Please select an option:");
             input = System.console().readLine();
 
             System.out.println("You choose " + input);
+
+            multipleStack.pop(MultipleStackInArray.Stacks.GAME_1);
+
             if (input.equals("exit")) {
                 exit = true;
             }
         }
     }
 
-    private static Vector<Card> populateDeck() {
-        Vector<Card> deck = new Vector<>(MAX_CARDS, 1);
+    private static Card[] populateDeck() {
+        Card[] deck = new Card[MAX_CARDS];
+        int count = 0;
         for (Suit suit : Suit.values()) {
             for (int i = 1; i <= MAX_CARD_NUMBERS; i++) {
-                deck.add(new Card(i, suit));
+                deck[count] = new Card(i, suit);
+                count++;
             }
         }
-        return deck;
+        List<Card> deckList = Arrays.asList(deck);
+        Collections.shuffle(deckList);
+        return deckList.toArray(deck);
     }
 }
