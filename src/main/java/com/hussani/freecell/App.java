@@ -3,6 +3,7 @@ package com.hussani.freecell;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 public class App {
     public static final Integer MAX_CARD_NUMBERS = 13;
@@ -11,17 +12,21 @@ public class App {
     public static void main(String[] args) {
         boolean exit = false;
         String input;
-
-        MultipleStackInArray multipleStack = new MultipleStackInArray(populateDeck());
+        Scanner in = new Scanner(System.in);
+        MultipleStackInArray<Card> multipleStack = new MultipleStackInArray<>(populateDeck());
+        System.out.println("Welcome to Freecell!");
         while (!exit) {
-            System.out.println("Welcome to Freecell!");
             multipleStack.print();
             System.out.println("Please select an option:");
-            input = System.console().readLine();
+            input = in.nextLine();
 
             System.out.println("You choose " + input);
 
-            multipleStack.pop(MultipleStackInArray.Stacks.GAME_1);
+            try {
+                multipleStack.pop(MultipleStackInArray.Stacks.GAME_1);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
 
             if (input.equals("exit")) {
                 exit = true;

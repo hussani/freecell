@@ -3,16 +3,16 @@ package com.hussani.freecell;
 import java.util.Arrays;
 import java.util.Map;
 
-public class MultipleStackInArray {
+public class MultipleStackInArray<T> {
 
     public enum Stacks { GAME_1, GAME_2, GAME_3, GAME_4, GAME_5, GAME_6, GAME_7, GAME_8, OUT }
 
-    private final Card[] cards;
+    private final T[] items;
 
     private final Map<Stacks, StackInfo> stacks;
 
-    public MultipleStackInArray(Card[] cards) {
-        this.cards = cards;
+    public MultipleStackInArray(T[] items) {
+        this.items = items;
 
         this.stacks = Map.of(
                 Stacks.GAME_1, new StackInfo(7, 0),
@@ -27,15 +27,18 @@ public class MultipleStackInArray {
         );
     }
 
-    public Card[] getCards() {
-        return cards;
+    public T[] getItems() {
+        return this.items;
     }
 
-    public Card pop(Stacks stack) {
+    public T pop(Stacks stack) {
         StackInfo info = stacks.get(stack);
+        if (info.getStackSize() == 0) {
+            throw new IllegalStateException("Stack is empty");
+        }
         int position = info.getStackStartIndex() + info.getStackSize() - 1;
-        final Card card = cards[position];
-        cards[position] = null;
+        final T card = this.items[position];
+        this.items[position] = null;
         info.decrementStackSize();
         // todo: shift cards to the left
         return card;
@@ -49,7 +52,7 @@ public class MultipleStackInArray {
     private String getStackWithItems(Stacks stack) {
         StackInfo info = stacks.get(stack);
         return stack.toString() + ": " + Arrays.toString(Arrays.copyOfRange(
-                this.getCards(), info.getStackStartIndex(), info.getStackStartIndex() + info.getStackSize()));
+                this.getItems(), info.getStackStartIndex(), info.getStackStartIndex() + info.getStackSize()));
     }
 
 
@@ -59,14 +62,6 @@ public class MultipleStackInArray {
 
         public StackInfo(int stackSize, int stackStartIndex) {
             this.stackSize = stackSize;
-            this.stackStartIndex = stackStartIndex;
-        }
-
-        public void setStackSize(int stackSize) {
-            this.stackSize = stackSize;
-        }
-
-        public void setStackStartIndex(int stackStartIndex) {
             this.stackStartIndex = stackStartIndex;
         }
 
