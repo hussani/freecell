@@ -17,8 +17,22 @@ public class StackInfo {
         return stackStartIndex;
     }
 
-    public void decrementStackSize() {
+    void decrementStackSize() {
         stackSize--;
+    }
+
+    void incrementStackSize() {
+        stackSize++;
+    }
+
+    void decrementStackStartIndex() {
+        if (stackStartIndex > 0) {
+            stackStartIndex--;
+        }
+    }
+
+    void incrementStackStartIndex() {
+        stackStartIndex++;
     }
 
     @Override
