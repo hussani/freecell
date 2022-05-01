@@ -5,9 +5,9 @@ import com.hussani.freecell.ds.StackInfo;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
-import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class FreecellGameTest {
 
@@ -95,5 +95,52 @@ class FreecellGameTest {
         FreecellGame game = new FreecellGame(multipleStack, 1);
         game.moveToFreeCell("first");
         assertThrows(GameException.class, () -> game.moveToFreeCell("first"));
+    }
+
+    @Test
+    void moveOut() {
+        Map<String, StackInfo> stacks = Map.of(
+                "first", new StackInfo(2, 0),
+                "second", new StackInfo(2, 2)
+        );
+        final Card movingCard = new Card(1, Suit.HEARTS);
+        Card[] cards = {
+                new Card(1, Suit.CLUBS), movingCard,
+                new Card(11, Suit.DIAMONDS), new Card(4, Suit.SPADES)};
+        MultipleStackInArray<Card> multipleStack = new MultipleStackInArray<>(cards, stacks);
+
+        FreecellGame game = new FreecellGame(multipleStack, 4);
+        game.moveOut("first");
+
+        Map<Suit, Integer> lastDiscarded = Map.of(Suit.CLUBS, 0, Suit.DIAMONDS,
+                0, Suit.HEARTS, 1, Suit.SPADES, 0);
+        assertEquals(1, multipleStack.getStackCount("first"));
+        assertEquals(2, multipleStack.getStackCount("second"));
+        assertEquals(2, multipleStack.getStackCount("second"));
+        assertEquals(lastDiscarded, game.getLastDiscardedCard());
+    }
+
+    @Test
+    void moveOutShouldNotWorkWhenTheLastDiscardedIsOneNumberLesserThanMovingCard() {
+        Map<String, StackInfo> stacks = Map.of(
+                "first", new StackInfo(2, 0),
+                "second", new StackInfo(2, 2)
+        );
+        final Card movingCard = new Card(6, Suit.HEARTS);
+        Card[] cards = {
+                new Card(1, Suit.CLUBS), movingCard,
+                new Card(11, Suit.DIAMONDS), new Card(4, Suit.SPADES)};
+        MultipleStackInArray<Card> multipleStack = new MultipleStackInArray<>(cards, stacks);
+
+        final Map<Suit, Integer> lastDiscarded = Map.of(Suit.CLUBS, 0, Suit.DIAMONDS,
+                0, Suit.HEARTS, 1, Suit.SPADES, 0);
+
+        FreecellGame game = new FreecellGame(multipleStack, 4, lastDiscarded);
+
+        assertThrows(GameException.class, () -> game.moveOut("first"));
+
+        assertEquals(2, multipleStack.getStackCount("first"));
+        assertEquals(2, multipleStack.getStackCount("second"));
+        assertEquals(lastDiscarded, game.getLastDiscardedCard());
     }
 }
