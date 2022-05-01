@@ -6,21 +6,21 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FreecellGame {
+public class FreeCellGame {
     private final Card[] freeCells;
 
     private final MultipleStackInArray<Card> stacks;
 
     private final Map<Suit, Integer> lastDiscardedCard;
 
-    public FreecellGame(MultipleStackInArray<Card> stacks, final int freeCellCount) {
+    public FreeCellGame(MultipleStackInArray<Card> stacks, final int freeCellCount) {
         this.stacks = stacks;
         this.freeCells = new Card[freeCellCount];
         this.lastDiscardedCard = new HashMap<>(Map.of(Suit.CLUBS, 0, Suit.DIAMONDS,
                 0, Suit.HEARTS, 0, Suit.SPADES, 0));
     }
 
-    FreecellGame(final MultipleStackInArray<Card> stacks,
+    FreeCellGame(final MultipleStackInArray<Card> stacks,
                  final int freeCellCount, Map<Suit, Integer> lastDiscardedCard) {
         this.stacks = stacks;
         this.freeCells = new Card[freeCellCount];

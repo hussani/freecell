@@ -9,7 +9,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class FreecellGameTest {
+class FreeCellGameTest {
 
     @Test
     void moveTopCard() {
@@ -22,7 +22,7 @@ class FreecellGameTest {
                 new Card( 11, Suit.DIAMONDS), new Card(4, Suit.SPADES)};
         MultipleStackInArray<Card> multipleStack = new MultipleStackInArray<>(cards, stacks);
 
-        FreecellGame game = new FreecellGame(multipleStack, 4);
+        FreeCellGame game = new FreeCellGame(multipleStack, 4);
         game.moveTopCard("first", "second");
         assertEquals(1, multipleStack.getStackCount("first"));
         assertEquals(3, multipleStack.getStackCount("second"));
@@ -39,7 +39,7 @@ class FreecellGameTest {
                 new Card( 11, Suit.DIAMONDS), new Card(4, Suit.DIAMONDS)};
         MultipleStackInArray<Card> multipleStack = new MultipleStackInArray<>(cards, stacks);
 
-        FreecellGame game = new FreecellGame(multipleStack, 4);
+        FreeCellGame game = new FreeCellGame(multipleStack, 4);
         assertThrows(GameException.class,
                 () -> game.moveTopCard("first", "second"),
                 "Cards must be of different colors");
@@ -56,7 +56,7 @@ class FreecellGameTest {
                 new Card( 11, Suit.DIAMONDS), new Card(4, Suit.SPADES)};
         MultipleStackInArray<Card> multipleStack = new MultipleStackInArray<>(cards, stacks);
 
-        FreecellGame game = new FreecellGame(multipleStack, 4);
+        FreeCellGame game = new FreeCellGame(multipleStack, 4);
         assertThrows(GameException.class,
                 () -> game.moveTopCard("first", "second"),
                 "The moving card must be one number below of the target card");
@@ -74,7 +74,7 @@ class FreecellGameTest {
                 new Card(11, Suit.DIAMONDS), new Card(4, Suit.SPADES)};
         MultipleStackInArray<Card> multipleStack = new MultipleStackInArray<>(cards, stacks);
 
-        FreecellGame game = new FreecellGame(multipleStack, 4);
+        FreeCellGame game = new FreeCellGame(multipleStack, 4);
         game.moveToFreeCell("first");
         assertEquals(1, multipleStack.getStackCount("first"));
         assertEquals(2, multipleStack.getStackCount("second"));
@@ -92,7 +92,7 @@ class FreecellGameTest {
                 new Card(11, Suit.DIAMONDS), new Card(4, Suit.SPADES)};
         MultipleStackInArray<Card> multipleStack = new MultipleStackInArray<>(cards, stacks);
 
-        FreecellGame game = new FreecellGame(multipleStack, 1);
+        FreeCellGame game = new FreeCellGame(multipleStack, 1);
         game.moveToFreeCell("first");
         assertThrows(GameException.class, () -> game.moveToFreeCell("first"));
     }
@@ -109,7 +109,7 @@ class FreecellGameTest {
                 new Card(11, Suit.DIAMONDS), new Card(4, Suit.SPADES)};
         MultipleStackInArray<Card> multipleStack = new MultipleStackInArray<>(cards, stacks);
 
-        FreecellGame game = new FreecellGame(multipleStack, 4);
+        FreeCellGame game = new FreeCellGame(multipleStack, 4);
         game.moveOut("first");
 
         Map<Suit, Integer> lastDiscarded = Map.of(Suit.CLUBS, 0, Suit.DIAMONDS,
@@ -135,7 +135,7 @@ class FreecellGameTest {
         final Map<Suit, Integer> lastDiscarded = Map.of(Suit.CLUBS, 0, Suit.DIAMONDS,
                 0, Suit.HEARTS, 1, Suit.SPADES, 0);
 
-        FreecellGame game = new FreecellGame(multipleStack, 4, lastDiscarded);
+        FreeCellGame game = new FreeCellGame(multipleStack, 4, lastDiscarded);
 
         assertThrows(GameException.class, () -> game.moveOut("first"));
 
