@@ -24,8 +24,8 @@ class FreeCellGameTest {
 
         FreeCellGame game = new FreeCellGame(multipleStack, 4);
         game.moveTopCard("first", "second");
-        assertEquals(1, multipleStack.getStackCount("first"));
-        assertEquals(3, multipleStack.getStackCount("second"));
+        assertEquals(1, multipleStack.getStackItemCount("first"));
+        assertEquals(3, multipleStack.getStackItemCount("second"));
     }
 
     @Test
@@ -76,8 +76,8 @@ class FreeCellGameTest {
 
         FreeCellGame game = new FreeCellGame(multipleStack, 4);
         game.moveToFreeCell("first");
-        assertEquals(1, multipleStack.getStackCount("first"));
-        assertEquals(2, multipleStack.getStackCount("second"));
+        assertEquals(1, multipleStack.getStackItemCount("first"));
+        assertEquals(2, multipleStack.getStackItemCount("second"));
         assertEquals(movingCard, game.getFreeCells()[0]);
     }
 
@@ -134,7 +134,7 @@ class FreeCellGameTest {
         FreeCellGame game = new FreeCellGame(multipleStack, 4);
         game.moveToFreeCell("first");
         game.moveFreeCellToGame(0, "second");
-        assertEquals(3, multipleStack.getStackCount("second"));
+        assertEquals(3, multipleStack.getStackItemCount("second"));
         assertEquals(movingCard, multipleStack.peek("second"));
     }
 
@@ -155,9 +155,9 @@ class FreeCellGameTest {
 
         Map<Suit, Integer> lastDiscarded = Map.of(Suit.CLUBS, 0, Suit.DIAMONDS,
                 0, Suit.HEARTS, 1, Suit.SPADES, 0);
-        assertEquals(1, multipleStack.getStackCount("first"));
-        assertEquals(2, multipleStack.getStackCount("second"));
-        assertEquals(2, multipleStack.getStackCount("second"));
+        assertEquals(1, multipleStack.getStackItemCount("first"));
+        assertEquals(2, multipleStack.getStackItemCount("second"));
+        assertEquals(2, multipleStack.getStackItemCount("second"));
         assertEquals(lastDiscarded, game.getLastDiscardedCard());
     }
 
@@ -180,8 +180,8 @@ class FreeCellGameTest {
 
         assertThrows(GameException.class, () -> game.moveFromGameToFoundation("first"));
 
-        assertEquals(2, multipleStack.getStackCount("first"));
-        assertEquals(2, multipleStack.getStackCount("second"));
+        assertEquals(2, multipleStack.getStackItemCount("first"));
+        assertEquals(2, multipleStack.getStackItemCount("second"));
         assertEquals(lastDiscarded, game.getLastDiscardedCard());
     }
 }

@@ -8,22 +8,18 @@ public class MultipleStackInArray<T> {
 
     private final T[] items;
 
-    private final int itemCapacity;
-
     private int emptyPositionsCount;
 
     private final Map<String, StackInfo> stacks;
 
     public MultipleStackInArray(T[] items, Map<String, StackInfo> stacks) {
         this.items = items;
-        this.itemCapacity = items.length;
         this.emptyPositionsCount = 0;
         this.stacks = stacks;
     }
 
     public MultipleStackInArray(T[] items, Map<String, StackInfo> stacks, int itemCapacity) {
         this.items = Arrays.copyOf(items, itemCapacity); // creates a new array with the same elements and new capacity
-        this.itemCapacity = itemCapacity;
         this.emptyPositionsCount = itemCapacity - items.length;
         this.stacks = stacks;
     }
@@ -37,10 +33,9 @@ public class MultipleStackInArray<T> {
         return this.stacks.size();
     }
 
-    public int getStackCount(String stack) {
+    public int getStackItemCount(String stack) {
         return getStackInfo(stack).getStackSize();
     }
-
 
     public T pop(String stack) {
         StackInfo info = getStackInfo(stack);
@@ -121,7 +116,7 @@ public class MultipleStackInArray<T> {
     }
     private void checkStackExists(String stack) {
         if (!stacks.containsKey(stack)) {
-            throw new IllegalArgumentException("Stack does not exist");
+            throw new IllegalStateException("Stack does not exist");
         }
     }
 

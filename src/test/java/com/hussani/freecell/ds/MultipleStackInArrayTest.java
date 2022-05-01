@@ -31,7 +31,7 @@ class MultipleStackInArrayTest {
         Integer[] items = IntStream.rangeClosed(1, 10).boxed().toArray(Integer[]::new);
         MultipleStackInArray<Integer> multipleStack = new MultipleStackInArray<>(items, stacks);
 
-        assertEquals(5, multipleStack.getStackCount("first"));
+        assertEquals(5, multipleStack.getStackItemCount("first"));
     }
 
     @Test
@@ -45,7 +45,7 @@ class MultipleStackInArrayTest {
 
         final Integer poppedItem = multipleStack.pop("first");
         assertEquals(5, poppedItem);
-        assertEquals(4, multipleStack.getStackCount("first"));
+        assertEquals(4, multipleStack.getStackItemCount("first"));
         assertEquals(6, multipleStack.getItems()[4]);
     }
 
@@ -60,7 +60,7 @@ class MultipleStackInArrayTest {
 
         final int newItem = 1000;
         multipleStack.push("first", newItem);
-        assertEquals(5, multipleStack.getStackCount("first"));
+        assertEquals(5, multipleStack.getStackItemCount("first"));
         assertEquals(1000, multipleStack.getItems()[4]);
         assertEquals(5, multipleStack.getItems()[5]);
     }
@@ -87,15 +87,15 @@ class MultipleStackInArrayTest {
         Integer[] items = IntStream.rangeClosed(1, 6).boxed().toArray(Integer[]::new);
         MultipleStackInArray<Integer> multipleStack = new MultipleStackInArray<>(items, stacks, 10);
 
-        assertEquals(1, multipleStack.getStackCount("first"));
-        assertEquals(5, multipleStack.getStackCount("second"));
+        assertEquals(1, multipleStack.getStackItemCount("first"));
+        assertEquals(5, multipleStack.getStackItemCount("second"));
 
         multipleStack.pop("first");
         assertEquals(0, multipleStack.getStackInfo("first").getStackStartIndex());
-        assertEquals(0, multipleStack.getStackCount("first"));
+        assertEquals(0, multipleStack.getStackItemCount("first"));
 
         multipleStack.push("first", 1);
-        assertEquals(1, multipleStack.getStackCount("first"));
+        assertEquals(1, multipleStack.getStackItemCount("first"));
         assertEquals(1, multipleStack.getItems()[0]);
         assertEquals(0, multipleStack.getStackInfo("first").getStackStartIndex());
         assertEquals(1, multipleStack.getStackInfo("second").getStackStartIndex());
