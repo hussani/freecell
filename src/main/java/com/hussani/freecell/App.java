@@ -9,6 +9,7 @@ import java.util.Scanner;
 import com.hussani.freecell.ds.MultipleStackInArray;
 import com.hussani.freecell.ds.StackInfo;
 import com.hussani.freecell.game.Card;
+import com.hussani.freecell.game.Stacks;
 import com.hussani.freecell.game.Suit;
 
 public class App {

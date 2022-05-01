@@ -21,22 +21,4 @@ public class Card {
     public String toString() {
         return "{" + value + "-" + suit + '}';
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Card card = (Card) o;
-
-        if (value != card.value) return false;
-        return suit == card.suit;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = value;
-        result = 31 * result + suit.hashCode();
-        return result;
-    }
 }
