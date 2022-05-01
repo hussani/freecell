@@ -12,9 +12,11 @@ public class GameCommandController {
 
     public void command(final String textCommand) {
         String[] commands = textCommand.split(" ");
-        if (commands.length == 4 && commands[0].equals("move")) {
+        if (commands.length >= 4 && commands[0].equals("move")) {
             handleMoveCommand(commands);
+            return;
         }
+        throw new IllegalArgumentException("Unknown command: " + textCommand);
     }
 
     private void handleMoveCommand(String[] commands) {
