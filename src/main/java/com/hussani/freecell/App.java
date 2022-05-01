@@ -8,6 +8,8 @@ import java.util.Scanner;
 
 import com.hussani.freecell.ds.MultipleStackInArray;
 import com.hussani.freecell.ds.StackInfo;
+import com.hussani.freecell.game.Card;
+import com.hussani.freecell.game.Suit;
 
 public class App {
     public static final Integer MAX_CARD_NUMBERS = 13;

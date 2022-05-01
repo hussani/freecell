@@ -1,4 +1,4 @@
-package com.hussani.freecell;
+package com.hussani.freecell.game;
 
 public class Card {
     final private int value;
