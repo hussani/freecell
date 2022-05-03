@@ -94,6 +94,10 @@ public class FreeCellGame {
         return Map.copyOf(lastDiscardedCard);
     }
 
+    public Card[] getStackCards(String stackName) {
+        return stacks.getStackItems(stackName);
+    }
+
     private void checkFreeCell(int i) {
         if (freeCells[i] == null) {
             throw new GameException("The free cell is empty");

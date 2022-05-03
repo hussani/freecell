@@ -1,17 +1,19 @@
 package com.hussani.freecell;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-
 import com.hussani.freecell.ds.MultipleStackInArray;
 import com.hussani.freecell.ds.StackInfo;
 import com.hussani.freecell.game.Card;
 import com.hussani.freecell.game.FreeCellGame;
 import com.hussani.freecell.game.Stacks;
 import com.hussani.freecell.game.Suit;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
+import static com.hussani.freecell.game.GamePresenter.presentGame;
 
 public class App {
     public static final Integer MAX_CARD_NUMBERS = 13;
@@ -27,12 +29,13 @@ public class App {
         int validPlays = 0, invalidPlays = 0;
 
         MultipleStackInArray<Card> multipleStack = new MultipleStackInArray<>(populateDeck(), defaultStack());
-        GameCommandController controller = new GameCommandController(new FreeCellGame(multipleStack, FREE_CELL_COUNT));
+        FreeCellGame freeCellGame = new FreeCellGame(multipleStack, FREE_CELL_COUNT);
+        GameCommandController controller = new GameCommandController(freeCellGame);
 
         Scanner in = new Scanner(System.in);
         System.out.println("Welcome to Freecell!");
         while (!exit) {
-            multipleStack.print();
+            presentGame(freeCellGame);
             System.out.println("Digit the command you want to execute:");
             input = in.nextLine();
 
@@ -54,7 +57,7 @@ public class App {
                 System.out.println("Invalid plays: " + invalidPlays);
                 System.out.println("Reseting...");
                 multipleStack = new MultipleStackInArray<>(populateDeck(), defaultStack());
-                controller = new GameCommandController(new FreeCellGame(multipleStack, FREE_CELL_COUNT));
+                controller = new GameCommandController(freeCellGame);
                 validPlays = invalidPlays = 0;
                 continue;
             }
@@ -73,13 +76,12 @@ public class App {
         return Map.of(
                 Stacks.GAME_1.toString(), new StackInfo(7, 0),
                 Stacks.GAME_2.toString(), new StackInfo(7, 7),
-                Stacks.GAME_3.toString(), new StackInfo(7, 13),
-                Stacks.GAME_4.toString(), new StackInfo(7, 20),
-                Stacks.GAME_5.toString(), new StackInfo(6, 27),
-                Stacks.GAME_6.toString(), new StackInfo(6, 33),
-                Stacks.GAME_7.toString(), new StackInfo(6, 39),
-                Stacks.GAME_8.toString(), new StackInfo(6, 45),
-                Stacks.OUT.toString(), new StackInfo(0, 51)
+                Stacks.GAME_3.toString(), new StackInfo(7, 14),
+                Stacks.GAME_4.toString(), new StackInfo(7, 21),
+                Stacks.GAME_5.toString(), new StackInfo(6, 28),
+                Stacks.GAME_6.toString(), new StackInfo(6, 34),
+                Stacks.GAME_7.toString(), new StackInfo(6, 40),
+                Stacks.GAME_8.toString(), new StackInfo(6, 46)
         );
     }
     private static Card[] populateDeck() {

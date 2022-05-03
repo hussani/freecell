@@ -37,6 +37,12 @@ public class MultipleStackInArray<T> {
         return getStackInfo(stack).getStackSize();
     }
 
+    public T[] getStackItems(String stack) {
+        StackInfo info = getStackInfo(stack);
+        return Arrays.copyOfRange(this.items, info.getStackStartIndex(),
+                info.getStackStartIndex() + info.getStackSize());
+    }
+
     public T pop(String stack) {
         StackInfo info = getStackInfo(stack);
         if (info.getStackSize() == 0) {
