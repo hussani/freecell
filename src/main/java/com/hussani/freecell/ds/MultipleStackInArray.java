@@ -29,8 +29,16 @@ public class MultipleStackInArray<T> {
         return Arrays.copyOf(this.items, this.items.length);
     }
 
+    public int getEmptyPositionsCount() {
+        return emptyPositionsCount;
+    }
+
     public int getStacksCount() {
         return this.stacks.size();
+    }
+
+    public String[] getStackNames() {
+        return this.stacks.keySet().toArray(new String[this.stacks.size()]);
     }
 
     public int getStackItemCount(String stack) {

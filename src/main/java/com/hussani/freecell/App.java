@@ -36,6 +36,7 @@ public class App {
         System.out.println("Welcome to Freecell!");
         while (!exit) {
             presentGame(freeCellGame);
+
             System.out.println("Digit the command you want to execute:");
             input = in.nextLine();
 
@@ -46,9 +47,7 @@ public class App {
             if (input.equals("exit")) {
                 exit = true;
                 System.out.println("Exiting...");
-                System.out.println("Valid plays: " + validPlays);
-                System.out.println("Invalid plays: " + invalidPlays);
-                System.out.println("Thanks for playing!");
+                printExitMessage(validPlays, invalidPlays);
                 continue;
             }
 
@@ -65,11 +64,27 @@ public class App {
             try {
                 controller.command(input);
                 validPlays++;
+
+                if (freeCellGame.isGameOver() && !freeCellGame.isWon()) {
+                    presentGame(freeCellGame);
+                    System.out.println("The game is over!");
+                    printExitMessage(validPlays, invalidPlays);
+                }
+                if (freeCellGame.isWon()) {
+                    System.out.println("You won!");
+                    printExitMessage(validPlays, invalidPlays);
+                }
             } catch (Exception e) {
                 System.out.println(ANSI_RED + e.getMessage() + ANSI_RESET);
                 invalidPlays++;
             }
         }
+    }
+
+    private static void printExitMessage(int validPlays, int invalidPlays) {
+        System.out.println("Valid plays: " + validPlays);
+        System.out.println("Invalid plays: " + invalidPlays);
+        System.out.println("Thanks for playing!");
     }
 
     private static Map<String, StackInfo> defaultStack() {

@@ -17,6 +17,8 @@ public class FreeCellGame {
 
     private final Map<Suit, Integer> lastDiscardedCard;
 
+    private boolean canMove = true;
+
     public FreeCellGame(MultipleStackInArray<Card> stacks, final int freeCellCount) {
         this.stacks = stacks;
         this.freeCells = new Card[freeCellCount];
@@ -41,6 +43,7 @@ public class FreeCellGame {
         validateGameMovement(movingCard, targetCard);
 
         stacks.push(stackNameTo, stacks.pop(stackNameFrom));
+        generatePossibleMoves();
     }
 
     public void moveToFreeCell(String stackNameFrom) {
@@ -50,6 +53,7 @@ public class FreeCellGame {
         for (int i = 0; i < freeCells.length; i++) {
             if (freeCells[i] == null) {
                 freeCells[i] = stacks.pop(stackNameFrom);
+                generatePossibleMoves();
                 return;
             }
         }
@@ -65,7 +69,7 @@ public class FreeCellGame {
         validateOutMovement(movingCard);
         stacks.pop(stackNameFrom);
         lastDiscardedCard.replace(movingCard.getSuit(), movingCard.getValue());
-
+        generatePossibleMoves();
     }
 
     public void moveFreeCellToGame(int i, String destinationStackName) {
@@ -75,6 +79,7 @@ public class FreeCellGame {
         validateGameMovement(freeCells[i], targetCard);
         stacks.push(destinationStackName, freeCells[i]);
         freeCells[i] = null;
+        generatePossibleMoves();
     }
 
     public void moveFreeCellToFoundation(int i) {
@@ -84,6 +89,7 @@ public class FreeCellGame {
         validateOutMovement(movingCard);
         lastDiscardedCard.replace(movingCard.getSuit(), movingCard.getValue());
         freeCells[i] = null;
+        generatePossibleMoves();
     }
 
     public Card[] getFreeCells() {
@@ -98,15 +104,72 @@ public class FreeCellGame {
         return stacks.getStackItems(stackName);
     }
 
+    public boolean isGameOver() {
+        return !canMove;
+    }
+
+    public boolean isWon() {
+        return this.stacks.getItems().length == this.stacks.getEmptyPositionsCount();
+    }
+
+    private void generatePossibleMoves() {
+        if (this.stacks.getItems().length == this.stacks.getEmptyPositionsCount()) { // if all stacks are empty
+            this.canMove = false;
+            return;
+        }
+        for (Card freeCell : freeCells) {
+            if (freeCell == null) {
+                this.canMove = true;
+                return;
+            }
+            for (String stackName : stacks.getStackNames()) {
+                Card stackCard = stacks.peek(stackName);
+                if (testOutMovement(freeCell) ||
+                        testOutMovement(stackCard) ||
+                        testGameMovement(freeCell, stackCard)) {
+                    this.canMove = true;
+                    return;
+                }
+            }
+        }
+        for (String stackNameFrom : stacks.getStackNames()) {
+            for (String stackNameTo : stacks.getStackNames()) {
+                if (testGameMovement(stacks.peek(stackNameFrom), stacks.peek(stackNameTo))) {
+                    this.canMove = true;
+                    return;
+                }
+            }
+        }
+        this.canMove = false;
+    }
+
     private void checkFreeCell(int i) {
         if (freeCells[i] == null) {
             throw new GameException("The free cell is empty");
         }
     }
 
+    private boolean testOutMovement(Card movingCard) {
+        try {
+            validateOutMovement(movingCard);
+            return true;
+        } catch (GameException e) {
+            return false;
+        }
+    }
+
     private void validateOutMovement(Card movingCard) {
         if (movingCard.getValue() != lastDiscardedCard.get(movingCard.getSuit()) + 1) {
             throw new GameException("The moving card must be one number greater of the last discarded card");
+        }
+    }
+
+    private boolean testGameMovement(Card movingCard, Card targetCard) {
+        try {
+            validateGameMovement(movingCard, targetCard);
+            return true;
+        } catch (GameException e) {
+            return false;
         }
     }
 
