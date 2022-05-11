@@ -45,12 +45,25 @@ public class MultipleStackInArray<T> {
         return getStackInfo(stack).getStackSize();
     }
 
+    /**
+     * Similar to iterate over items [stackStartIndex..(stackStartIndex + stackSize)
+     *   then copy to a new array.
+     * @param stack the stack name
+     * @return array of items in the stack
+     */
     public T[] getStackItems(String stack) {
         StackInfo info = getStackInfo(stack);
         return Arrays.copyOfRange(this.items, info.getStackStartIndex(),
                 info.getStackStartIndex() + info.getStackSize());
     }
 
+    /**
+     * Remove and return the item of the top of the stack.
+     * This method changes the array of all items. So move items from to the left (current position - 1).
+     * All the empty positions are filled with null at the end of array.
+     * @param stack Stack name
+     * @return T
+     */
     public T pop(String stack) {
         StackInfo info = getStackInfo(stack);
         if (info.getStackSize() == 0) {
@@ -66,6 +79,14 @@ public class MultipleStackInArray<T> {
         return item;
     }
 
+    /**
+     * And an item on the top of the stack.
+     * This method changes the array of all items. So move items from to the right (current position + 1)
+     *   to get the space to the new item.
+     * All the empty positions are filled with null at the end of array.
+     * @param stack Stack name
+     * @return T
+     */
     public void push(String stack, T newItem) {
         checkItemCapacity();
         StackInfo info = getStackInfo(stack);
@@ -77,6 +98,21 @@ public class MultipleStackInArray<T> {
         this.emptyPositionsCount--;
     }
 
+    public boolean isFull() {
+        return this.emptyPositionsCount == 0;
+    }
+
+    public boolean isEmpty() {
+        return this.emptyPositionsCount == this.items.length;
+    }
+
+    public boolean isStackEmpty(String stack) {
+        return getStackInfo(stack).getStackSize() == 0;
+    }
+
+    /**
+     * Return the item of the top of the stack without removing it.
+     */
     public T peek(String stack) {
         StackInfo info = getStackInfo(stack);
         return this.items[info.getStackStartIndex() + info.getStackSize() - 1];
@@ -96,12 +132,18 @@ public class MultipleStackInArray<T> {
             }});
     }
 
+    /**
+     * TODO: move from the first empty position to the current position.
+     */
     private void moveItemsToTheRight(int position) {
         for (int i = this.items.length - 1; i > position; i--) {
             exchangeItems(i, i - 1);
         }
     }
 
+    /**
+     * TODO: move from the current position until the first empty position.
+     */
     private void moveItemsToTheLeft(int position) {
         for (int i = position; i < this.items.length - 1; i++) {
             exchangeItems(i, i + 1);
@@ -114,17 +156,13 @@ public class MultipleStackInArray<T> {
         this.items[position2] = temp;
     }
 
-    public void print() {
-        this.stacks.forEach((key, value) -> System.out.println(getStackWithItems(key)));
-    }
-
     StackInfo getStackInfo(String stack) {
         checkStackExists(stack);
         return stacks.get(stack);
     }
 
     private void checkItemCapacity() {
-        if (emptyPositionsCount == 0) {
+        if (isFull()) {
             throw new IllegalStateException("No more space to add items");
         }
     }
@@ -132,11 +170,5 @@ public class MultipleStackInArray<T> {
         if (!stacks.containsKey(stack)) {
             throw new IllegalStateException("Stack does not exist");
         }
-    }
-
-    private String getStackWithItems(String stack) {
-        StackInfo info = stacks.get(stack);
-        return stack + ": " + Arrays.toString(Arrays.copyOfRange(
-                this.getItems(), info.getStackStartIndex(), info.getStackStartIndex() + info.getStackSize()));
     }
 }
