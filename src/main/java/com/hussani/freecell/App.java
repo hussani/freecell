@@ -57,6 +57,7 @@ public class App {
                 System.out.println("Reseting...");
                 multipleStack = new MultipleStackInArray<>(populateDeck(), defaultStack());
                 controller = new GameCommandController(freeCellGame);
+                freeCellGame.reset();
                 validPlays = invalidPlays = 0;
                 continue;
             }

@@ -15,7 +15,7 @@ public class GamePresenter {
         System.out.println("\nFoundation");
         game.getLastDiscardedCard().forEach((suit, number) -> {
             if (number != 0) {
-                System.out.format("%-15s %-15s\n", suit, "{" + number + "-" + suit + "");
+                System.out.format("%-15s %-15s\n", suit, "{" + number + "-" + suit + "}");
                 return;
             }
             System.out.format("%-15s %-15s\n", suit, null);

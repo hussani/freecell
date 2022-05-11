@@ -112,6 +112,12 @@ public class FreeCellGame {
         return this.stacks.getItems().length == this.stacks.getEmptyPositionsCount();
     }
 
+    public void reset() {
+        this.canMove = true;
+        Arrays.fill(freeCells, null);
+        this.lastDiscardedCard.forEach((k, v) -> lastDiscardedCard.put(k, 0));
+    }
+
     private void generatePossibleMoves() {
         if (this.stacks.getItems().length == this.stacks.getEmptyPositionsCount()) { // if all stacks are empty
             this.canMove = false;
